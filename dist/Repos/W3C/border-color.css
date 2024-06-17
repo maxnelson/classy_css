@@ -1,0 +1,9 @@
+.border-color-[ <color> {
+  border-color: [ <color>;
+}
+.border-color-transparent ]{1,4} {
+  border-color: transparent ]{1,4};
+}
+.border-color-inherit {
+  border-color: inherit;
+}

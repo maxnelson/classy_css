@@ -1,0 +1,9 @@
+.border-collapse-collapse {
+  border-collapse: collapse;
+}
+.border-collapse-separate {
+  border-collapse: separate;
+}
+.border-collapse-inherit {
+  border-collapse: inherit;
+}

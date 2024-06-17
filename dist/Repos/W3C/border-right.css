@@ -1,0 +1,6 @@
+.border-right-[ <border-width> || <border-style> || <'border-top-color'> ] {
+  border-right: [ <border-width> || <border-style> || <'border-top-color'> ];
+}
+.border-right-inherit {
+  border-right: inherit;
+}

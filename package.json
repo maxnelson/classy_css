@@ -4,8 +4,12 @@
   "description": "unopinionated CSS library",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "build_mdn": "node src/Repos/MDN/test.js",
+    "build_w3c": "node src/Repos/W3C/test.js",
+    "build": "node index.js"
   },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maxnelson/classy_css.git"
@@ -18,5 +22,11 @@
   "bugs": {
     "url": "https://github.com/maxnelson/classy_css/issues"
   },
-  "homepage": "https://github.com/maxnelson/classy_css#readme"
+  "homepage": "https://github.com/maxnelson/classy_css#readme",
+  "dependencies": {
+    "axios": "^1.7.2"
+  },
+  "devDependencies": {
+    "axios": "^1.7.2"
+  }
 }

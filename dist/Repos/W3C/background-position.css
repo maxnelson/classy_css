@@ -1,0 +1,39 @@
+.background-position-[ [ <percentage> {
+  background-position: [ [ <percentage>;
+}
+.background-position-left {
+  background-position: left;
+}
+.background-position-center {
+  background-position: center;
+}
+.background-position-right ] [ <percentage> {
+  background-position: right ] [ <percentage>;
+}
+.background-position-top {
+  background-position: top;
+}
+.background-position-center {
+  background-position: center;
+}
+.background-position-bottom ]? ] {
+  background-position: bottom ]? ];
+}
+.background-position-[ [ left {
+  background-position: [ [ left;
+}
+.background-position-center {
+  background-position: center;
+}
+.background-position-right ] || [ top {
+  background-position: right ] || [ top;
+}
+.background-position-center {
+  background-position: center;
+}
+.background-position-bottom ] ] {
+  background-position: bottom ] ];
+}
+.background-position-inherit {
+  background-position: inherit;
+}

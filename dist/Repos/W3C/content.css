@@ -1,0 +1,27 @@
+.content-normal {
+  content: normal;
+}
+.content-none {
+  content: none;
+}
+.content-[ <string> {
+  content: [ <string>;
+}
+.content-attr(<identifier>) {
+  content: attr(<identifier>);
+}
+.content-open-quote {
+  content: open-quote;
+}
+.content-close-quote {
+  content: close-quote;
+}
+.content-no-open-quote {
+  content: no-open-quote;
+}
+.content-no-close-quote ]+ {
+  content: no-close-quote ]+;
+}
+.content-inherit {
+  content: inherit;
+}

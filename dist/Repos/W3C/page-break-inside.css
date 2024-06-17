@@ -1,0 +1,9 @@
+.page-break-inside-avoid {
+  page-break-inside: avoid;
+}
+.page-break-inside-auto {
+  page-break-inside: auto;
+}
+.page-break-inside-inherit {
+  page-break-inside: inherit;
+}

@@ -1,0 +1,9 @@
+.counter-reset-[ <identifier> <integer>? ]+ {
+  counter-reset: [ <identifier> <integer>? ]+;
+}
+.counter-reset-none {
+  counter-reset: none;
+}
+.counter-reset-inherit {
+  counter-reset: inherit;
+}

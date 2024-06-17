@@ -1,0 +1,9 @@
+.counter-increment-[ <identifier> <integer>? ]+ {
+  counter-increment: [ <identifier> <integer>? ]+;
+}
+.counter-increment-none {
+  counter-increment: none;
+}
+.counter-increment-inherit {
+  counter-increment: inherit;
+}

@@ -1,0 +1,24 @@
+.font-[ [ <'font-style'> || <'font-variant'> || <'font-weight'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ] {
+  font: [ [ <'font-style'> || <'font-variant'> || <'font-weight'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ];
+}
+.font-caption {
+  font: caption;
+}
+.font-icon {
+  font: icon;
+}
+.font-menu {
+  font: menu;
+}
+.font-message-box {
+  font: message-box;
+}
+.font-small-caption {
+  font: small-caption;
+}
+.font-status-bar {
+  font: status-bar;
+}
+.font-inherit {
+  font: inherit;
+}
