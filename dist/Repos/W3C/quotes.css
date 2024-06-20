@@ -1,9 +1,0 @@
-.quotes-[<string> <string>]+ {
-  quotes: [<string> <string>]+;
-}
-.quotes-none {
-  quotes: none;
-}
-.quotes-inherit {
-  quotes: inherit;
-}

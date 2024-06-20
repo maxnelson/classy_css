@@ -1,6 +1,0 @@
-.outline-[ <'outline-color'> || <'outline-style'> || <'outline-width'> ] {
-  outline: [ <'outline-color'> || <'outline-style'> || <'outline-width'> ];
-}
-.outline-inherit {
-  outline: inherit;
-}

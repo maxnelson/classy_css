@@ -1,9 +1,0 @@
-.text-decoration-none {
-  text-decoration: none;
-}
-.text-decoration-[ underline || overline || line-through || blink ] {
-  text-decoration: [ underline || overline || line-through || blink ];
-}
-.text-decoration-inherit {
-  text-decoration: inherit;
-}

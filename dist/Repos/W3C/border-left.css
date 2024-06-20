@@ -1,6 +1,0 @@
-.border-left-[ <border-width> || <border-style> || <'border-top-color'> ] {
-  border-left: [ <border-width> || <border-style> || <'border-top-color'> ];
-}
-.border-left-inherit {
-  border-left: inherit;
-}

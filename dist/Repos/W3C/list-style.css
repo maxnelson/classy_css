@@ -1,6 +1,0 @@
-.list-style-[ <'list-style-type'> || <'list-style-position'> || <'list-style-image'> ] {
-  list-style: [ <'list-style-type'> || <'list-style-position'> || <'list-style-image'> ];
-}
-.list-style-inherit {
-  list-style: inherit;
-}

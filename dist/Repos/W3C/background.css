@@ -1,6 +1,0 @@
-.background-[<'background-color'> || <'background-image'> || <'background-repeat'> || <'background-attachment'> || <'background-position'>] {
-  background: [<'background-color'> || <'background-image'> || <'background-repeat'> || <'background-attachment'> || <'background-position'>];
-}
-.background-inherit {
-  background: inherit;
-}

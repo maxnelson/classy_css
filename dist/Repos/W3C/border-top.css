@@ -1,6 +1,0 @@
-.border-top-[ <border-width> || <border-style> || <'border-top-color'> ] {
-  border-top: [ <border-width> || <border-style> || <'border-top-color'> ];
-}
-.border-top-inherit {
-  border-top: inherit;
-}

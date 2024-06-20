@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 async function fetchCSSProperties() {
-  const outputDir = path.join(__dirname, "..", "dist", "Repos", "MDN");
+  const outputDir = path.join(__dirname, "..", "dist", "repos", "MDN");
   const filePath = path.join(outputDir, "test.txt");
   const url =
     "https://raw.githubusercontent.com/mdn/data/main/css/properties.json";
