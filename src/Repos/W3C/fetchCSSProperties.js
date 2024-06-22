@@ -4,10 +4,10 @@ const fs = require("fs");
 const path = require("path");
 const {
   containsSpecialCharacter,
-} = require("@src/utils/containsSpecialCharacter");
+} = require("@src/utils/string_utils/containsSpecialCharacter");
 const {
-  generateMeasurementValues,
-} = require("@src/utils/generateMeasurementValues");
+  generateLengthValues,
+} = require("@src/utils/generateValues/generateLengthValues");
 
 async function fetchCSSProperties() {
   //const url="https://raw.githubusercontent.com/w3c/webref/main/ed/css/CSS.json";
@@ -34,7 +34,7 @@ async function fetchCSSProperties() {
       for (value of propertyValues) {
         if (value === "<margin-width>") {
           //loop through values of margin-width, make a class for each value, should be 1rem to 10rem
-          fileContent = generateMeasurementValues(propertyName);
+          fileContent = generateLengthValues(propertyName);
           //console.log(propertyName);
         } else if (containsSpecialCharacter(value)) {
           counter++;

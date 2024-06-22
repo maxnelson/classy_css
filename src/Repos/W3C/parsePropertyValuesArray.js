@@ -23,25 +23,32 @@ async function parsePropertyValuesArray(responseData) {
       const shallowSplitPropertyValues = shallowSplitJoinedString(
         propertyValueJoinedString
       );
+      //console.log(propertyName);
+      //console.log(shallowSplitPropertyValues);
       const basicPropertyValues = parseOutComplexPropertyValues(
         shallowSplitPropertyValues
       );
 
+      console.log(basicPropertyValues);
       for (propertyValue of basicPropertyValues) {
         if (propertyValue[0] === "<") {
-          const valueObjectValuesCompiled = lookupValueInValuesArray(propertyValue, variableValuesArray);
+          const valueObjectValuesCompiled = lookupValueInValuesArray(
+            propertyValue,
+            variableValuesArray
+          );
+          if (valueObjectValuesCompiled) {
             for (propertyValue of valueObjectValuesCompiled) {
               if (propertyValue.indexOf(" ") == -1) {
                 var propertyValueFormatted = propertyValue;
               } else {
                 var propertyValueFormatted = propertyValue.replace(" ", "-");
               }
-              const CSSRule = createCSSRuleFromPropertyValue(
+              const CSSRuleString = createCSSRuleFromPropertyValue(
                 propertyName,
                 propertyValue,
                 propertyValueFormatted
               );
-              fileContent += CSSRule;
+              fileContent += CSSRuleString;
             }
           }
         } else {
@@ -54,7 +61,7 @@ async function parsePropertyValuesArray(responseData) {
         }
       }
       console.log(fileContent);
-      createFileAndAppendCSSRules(propertyName, fileContent);
+      //createFileAndAppendCSSRules(propertyName, fileContent);
     }
   }
 }

@@ -1,4 +1,4 @@
-function generateMeasurementValues(propertyName) {
+function generateLengthValues(propertyName) {
   let fileContent = "";
   for (let i = 0; i <= 15; i++) {
     const remValue =
@@ -31,4 +31,4 @@ function generateMeasurementValues(propertyName) {
   return fileContent;
 }
 
-module.exports = { generateMeasurementValues };
+module.exports = { generateLengthValues };

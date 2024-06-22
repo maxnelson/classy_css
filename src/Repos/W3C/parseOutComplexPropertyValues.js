@@ -4,8 +4,6 @@ require("module-alias/register");
 
 function parseOutComplexPropertyValues(shallowSplitPropertyValues) {
   let result = [];
-  console.log("shallowSplitPropertyValues: " + shallowSplitPropertyValues);
-
   for (propertyValue of shallowSplitPropertyValues) {
     let basicFormatCheck = /[^a-z<>-]/g;
     if (!basicFormatCheck.test(propertyValue)) {
@@ -22,8 +20,6 @@ function parseOutComplexPropertyValues(shallowSplitPropertyValues) {
       result.push(looksLikeYoureOutOfOptions);
     }
   }
-  console.log("result: " + result);
-  console.log("result length: " + result.length);
   return result;
 }
 
