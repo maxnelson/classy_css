@@ -1,16 +1,16 @@
+require("module-alias/register");
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
 const {
   containsSpecialCharacter,
-} = require("../../utils/containsSpecialCharacter");
+} = require("@src/utils/containsSpecialCharacter");
 const {
   generateMeasurementValues,
-} = require("../../utils/generateMeasurementValues");
+} = require("@src/utils/generateMeasurementValues");
 
 async function fetchCSSProperties() {
-  const url =
-    "https://raw.githubusercontent.com/w3c/webref/main/ed/css/CSS.json";
+  //const url="https://raw.githubusercontent.com/w3c/webref/main/ed/css/CSS.json";
   const inputFile = path.join(
     global.__basedir,
     "src",
@@ -19,7 +19,6 @@ async function fetchCSSProperties() {
     "localJSON",
     "CSS.json"
   );
-  console.log(generateMeasurementValues);
   const outputDir = path.join(global.__basedir, "dist", "repos", "W3C");
   try {
     //const response = await axios.get(url);
@@ -36,7 +35,7 @@ async function fetchCSSProperties() {
         if (value === "<margin-width>") {
           //loop through values of margin-width, make a class for each value, should be 1rem to 10rem
           fileContent = generateMeasurementValues(propertyName);
-          console.log(propertyName);
+          //console.log(propertyName);
         } else if (containsSpecialCharacter(value)) {
           counter++;
           continue;
@@ -50,7 +49,6 @@ async function fetchCSSProperties() {
       }
       fs.writeFileSync(filePath, fileContent, "utf8");
     }
-    console.log(counter);
   } catch (error) {
     console.error("Error fetching CSS properties data:", error);
     return null;
