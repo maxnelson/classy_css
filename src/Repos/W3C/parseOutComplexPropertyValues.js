@@ -1,6 +1,13 @@
-const { shallowSplitJoinedString } = require("./shallowSplitJoinedString");
-
 require("module-alias/register");
+const {
+  shallowSplitJoinedString,
+} = require("@src/utils/string_utils/shallowSplitJoinedString");
+const {
+  separateSubArray,
+} = require("@src/utils/string_utils/separateSubArray");
+const {
+  removeStringBeforeQuestionMark,
+} = require("@src/utils/string_utils/removeStringBeforeQuestionMark");
 
 function parseOutComplexPropertyValues(shallowSplitPropertyValues) {
   let result = [];
@@ -9,34 +16,18 @@ function parseOutComplexPropertyValues(shallowSplitPropertyValues) {
     if (!basicFormatCheck.test(propertyValue)) {
       result.push(propertyValue);
     } else if (propertyValue.indexOf("[") !== -1) {
-      const subArray = seperateSubArray(propertyValue);
+      const subArray = separateSubArray(propertyValue);
       for (arrayItem of subArray) {
         const arrayItemSplit = shallowSplitJoinedString(arrayItem);
         result.push(...arrayItemSplit);
       }
     } else if (propertyValue.indexOf("?") !== -1) {
       const looksLikeYoureOutOfOptions =
-        removeBeforeQuestionMark(propertyValue);
+        removeStringBeforeQuestionMark(propertyValue);
       result.push(looksLikeYoureOutOfOptions);
     }
   }
   return result;
-}
-
-function removeBeforeQuestionMark(input) {
-  const questionMarkIndex = input.indexOf("?");
-  const parsedString = input.substring(questionMarkIndex + 1);
-  return parsedString.trim();
-}
-
-function seperateSubArray(input) {
-  const bracketPattern = /\[([^\]]+)\]/g;
-  const matches = [];
-  let match;
-  while ((match = bracketPattern.exec(input))) {
-    matches.push(match[1]);
-  }
-  return matches;
 }
 
 module.exports = { parseOutComplexPropertyValues };

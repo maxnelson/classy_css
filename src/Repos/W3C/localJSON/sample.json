@@ -1,0 +1,40 @@
+
+{"oneOf":
+    [
+        {"type":"keyword","name":"normal"},
+        {"type":"valuespace","name":"content-distribution"},
+        {"type":"array","items":
+            [
+                {"type":"valuespace","name":"overflow-position","optional":true},
+                {"oneOf":
+                    [
+                        {"type":"valuespace","name":"content-position"},
+                        {"type":"keyword","name":"left"},
+                        {"type":"keyword","name":"right"}
+                    ]
+                }
+            ]
+        }
+    ]
+},
+
+{"oneOf":
+    [
+        {"type":"keyword","name":"auto"},
+        {"type":"keyword","name":"normal"},
+        {"type":"keyword","name":"stretch"},
+        {"type":"valuespace","name":"baseline-position"},
+        {"type":"array","items":
+            [
+                {"type":"valuespace","name":"overflow-position","optional":true},
+                {"oneOf":
+                    [    
+                        {"type":"valuespace","name":"self-position"},
+                        {"type":"keyword","name":"left"},
+                        {"type":"keyword","name":"right"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

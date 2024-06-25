@@ -3,17 +3,17 @@ require("module-alias/register");
 function shallowSplitJoinedString(input) {
   const result = [];
   let buffer = "";
-  let inBraces = false;
+  let inBraces = 0;
 
   for (let i = 0; i < input.length; i++) {
     const char = input[i];
     if (char === "[") {
-      inBraces = true;
+      inBraces++;
     } else if (char === "]") {
-      inBraces = false;
+      inBraces--;
     }
 
-    if (char === "|" && !inBraces) {
+    if (char === "|" && inBraces === 0) {
       result.push(buffer.trim());
       buffer = "";
     } else {
