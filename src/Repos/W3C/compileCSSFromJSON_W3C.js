@@ -4,15 +4,17 @@ const fetchJSONFromURL = require("@src/repos/W3C/fetchJSONFromURL");
 const { parsePropDefValue } = require("@src/repos/W3C/css-grammar-parser");
 
 async function compileCSSFromJSON_W3C() {
+  /*
   const string1 =
     "normal | <content-distribution> | <overflow-position>? [ <content-position> | left | right ]";
   const string2 =
     "auto | normal | stretch | <baseline-position> | <overflow-position>? [ <self-position> | left | right ]";
-  const parsedString = parsePropDefValue(string2);
+  const string3 =
+    "normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | inherit";
+  const parsedString = parsePropDefValue(string3);
   console.log(JSON.stringify(parsedString));
+  */
 
-  //console.log("Compiling CSS from JSON files");
-  /*
   const CSSAlignFile = path.join(
     global.__basedir,
     "src",
@@ -21,7 +23,7 @@ async function compileCSSFromJSON_W3C() {
     "localJSON",
     "css-align.json"
   );
-  fetchJSONFromURL.fetchJSONFromURL(CSSAlignFile);
+  //fetchJSONFromURL.fetchJSONFromURL(CSSAlignFile);
   const CSSFile = path.join(
     global.__basedir,
     "src",
@@ -31,7 +33,6 @@ async function compileCSSFromJSON_W3C() {
     "CSS.json"
   );
   fetchJSONFromURL.fetchJSONFromURL(CSSFile);
-  */
 }
 
 module.exports = { compileCSSFromJSON_W3C };

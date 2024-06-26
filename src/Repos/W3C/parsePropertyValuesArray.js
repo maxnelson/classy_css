@@ -20,69 +20,129 @@ const {
 const {
   extractArrayFromString,
 } = require("@src/utils/string_utils/extractArrayFromString");
+const { parsePropDefValue } = require("@src/repos/W3C/css-grammar-parser");
 
 async function parsePropertyValuesArray(responseData) {
-  const variableValuesArray = responseData.values;
-  for (let i = 0; i < responseData.properties.length; i++) {
+  const propertiesArray = responseData.properties;
+  const valuesArray = responseData.values;
+  for (let i = 0; i < propertiesArray.length; i++) {
     let fileContent = "";
-    const propertyName = responseData.properties[i].name;
-    const propertyValueJoinedString = responseData.properties[i].value;
-    if (propertyValueJoinedString) {
+    const propertyName = propertiesArray[i].name;
+    if (propertyName === "outline-color") {
+      const propertyValueJoinedString = propertiesArray[i].value;
+
       console.log(propertyName);
       console.log(propertyValueJoinedString);
-
-      const arrayFromString = extractArrayFromString(propertyValueJoinedString);
-      console.log(propertyName);
-      const shallowSplitPropertyValues =
-        shallowSplitJoinedString(arrayFromString);
-      console.log(arrayFromString);
-
-      //console.log(shallowSplitPropertyValues);
-      //const anotherArray = separateSubArray(shallowSplitPropertyValues);
-      //console.log(anotherArray);
-      if (shallowSplitPropertyValues.length === 0) {
-        const basicPropertyValues = parseOutComplexPropertyValues(
-          shallowSplitJoinedString
-        );
-
-        console.log(basicPropertyValues);
-
-        for (let propertyValue of basicPropertyValues) {
-          if (propertyValue[0] === "<") {
-            const valueObjectValuesCompiled = lookupValueInValuesArray(
-              propertyValue,
-              variableValuesArray
-            );
-            if (valueObjectValuesCompiled) {
-              for (let propertyValue of valueObjectValuesCompiled) {
-                if (propertyValue.indexOf(" ") == -1) {
-                  var propertyValueFormatted = propertyValue;
-                } else {
-                  var propertyValueFormatted = propertyValue.replace(" ", "-");
-                }
-                const CSSRuleString = createCSSRuleFromPropertyValue(
-                  propertyName,
-                  propertyValue,
-                  propertyValueFormatted
-                );
-                fileContent += CSSRuleString;
-              }
-            }
-          } else {
-            const CSSRuleString = createCSSRuleFromPropertyValue(
+      if (propertyValueJoinedString !== undefined) {
+        const parsedValueObject = parsePropDefValue(propertyValueJoinedString);
+        console.log(parsedValueObject);
+        if (parsedValueObject) {
+          if ("oneOf" in parsedValueObject) {
+            fileContent += handleOneOfArray(
               propertyName,
-              propertyValue,
-              propertyValue
+              parsedValueObject,
+              valuesArray
             );
-            fileContent += CSSRuleString;
           }
         }
-
-        //console.log(fileContent);
-        //createFileAndAppendCSSRules(propertyName, fileContent);
       }
     }
+    //console.log(fileContent);
+    //createFileAndAppendCSSRules(propertyName, fileContent);
   }
 }
+
+const handleOneOfArray = (propertyName, parsedValueObject, valuesArray) => {
+  let CSSRuleStrings = "";
+  for (let j = 0; j < parsedValueObject.oneOf.length; j++) {
+    const propertyValue = parsedValueObject.oneOf[j];
+    if (propertyValue.type === "keyword") {
+      const CSSRuleString = createCSSRuleFromPropertyValue(
+        propertyName,
+        propertyValue.name
+      );
+      CSSRuleStrings += CSSRuleString;
+    } else if (propertyValue.type === "valuespace") {
+      CSSRuleStrings += handleNonTerminalValue(
+        propertyName,
+        propertyValue.name,
+        valuesArray
+      );
+    } else if (propertyValue.type === "array") {
+      CSSRuleStrings += handleArrayTypeValue(
+        propertyName,
+        propertyValue.items,
+        valuesArray
+      );
+    } else if (propertyValue.type === "primitive") {
+      console.log("primitive value: " + propertyValue.name);
+    }
+  }
+  return CSSRuleStrings;
+};
+
+const handleNonTerminalValue = (propertyName, valueName, valuesArray) => {
+  let CSSRuleStrings = "";
+  const nonTerminalValuesArray = lookupValueInValuesArray(
+    valueName,
+    valuesArray
+  );
+  console.log("does this even fire");
+
+  console.log(nonTerminalValuesArray);
+
+  for (nonTerminalValue of nonTerminalValuesArray) {
+    const CSSRuleString = createCSSRuleFromPropertyValue(
+      propertyName,
+      nonTerminalValue
+    );
+    CSSRuleStrings += CSSRuleString;
+  }
+  return CSSRuleStrings;
+};
+
+const handleArrayTypeValue = (
+  propertyName,
+  propertyValuesArray,
+  valuesArray
+) => {
+  let CSSRuleStrings = "";
+  if (propertyValuesArray.type === "array") {
+    CSSRuleStrings += handleSecondOrderArray(
+      propertyName,
+      propertyValuesArray.items,
+      valuesArray
+    );
+  }
+  for (let k = 0; k < propertyValuesArray.length; k++) {
+    const propertyValue = propertyValuesArray[k];
+
+    if (propertyValue.type === "valuespace") {
+      CSSRuleStrings += handleNonTerminalValue(
+        propertyName,
+        propertyValue.name,
+        valuesArray
+      );
+    }
+    if (propertyValue.type === "array") {
+      console.log("looks like we have an array of arrays");
+    }
+  }
+  return CSSRuleStrings;
+};
+
+const handleSecondOrderArray = (
+  propertyName,
+  propertyValuesArray,
+  valuesArray
+) => {
+  let CSSRuleStrings = "";
+  for (item of propertyValuesArray) {
+    if ("oneOf" in item) {
+      CSSRuleStrings += handleOneOfArray(propertyName, item, valuesArray);
+    }
+  }
+  return CSSRuleStrings;
+};
 
 module.exports = { parsePropertyValuesArray };
