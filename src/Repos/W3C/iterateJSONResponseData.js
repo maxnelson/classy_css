@@ -1,58 +1,62 @@
 require("module-alias/register");
 const {
-  shallowSplitJoinedString,
-} = require("@src/utils/string_utils/shallowSplitJoinedString");
-const {
   createCSSRuleFromPropertyValue,
+  createCSSRuleFromCustomPrimitiveValue,
 } = require("@src/repos/W3C/createCSSRuleFromPropertyValue");
 const {
-  parseOutComplexPropertyValues,
-} = require("@src/repos/W3C/parseOutComplexPropertyValues");
+  parsePropDefValue,
+} = require("@src/utils/parse_utils/css-grammar-parser");
 const {
   createFileAndAppendCSSRules,
 } = require("@src/repos/W3C/createFileAndAppendCSSRules");
 const {
   lookupValueInValuesArray,
 } = require("@src/repos/W3C/lookupValueInValuesArray");
-const {
-  separateSubArray,
-} = require("@src/utils/string_utils/separateSubArray");
-const {
-  extractArrayFromString,
-} = require("@src/utils/string_utils/extractArrayFromString");
-const { parsePropDefValue } = require("@src/repos/W3C/css-grammar-parser");
 const customPrimitiveValuesArray = require("@src/repos/W3C/localJSON/customPrimitiveValues.json");
-const {
-  createCSSRuleFromCustomPrimitiveValue,
-} = require("@src/repos/W3C/createCSSRuleFromPropertyValue");
 
-async function parsePropertyValuesArray(responseData) {
+function iterateJSONResponseData(responseData) {
   const propertiesArray = responseData.properties;
   const valuesArray = responseData.values;
-  for (let i = 0; i < propertiesArray.length; i++) {
+  for (let index = 0; index < propertiesArray.length; index++) {
     let fileContent = "";
-    const propertyName = propertiesArray[i].name;
-    if (propertyName !== "font-weight") {
-      const propertyValueJoinedString = propertiesArray[i].value;
-      console.log(propertyName);
-      console.log(propertyValueJoinedString);
-      if (propertyValueJoinedString !== undefined) {
-        const parsedValueObject = parsePropDefValue(propertyValueJoinedString);
-        if (parsedValueObject) {
-          if ("oneOf" in parsedValueObject) {
-            fileContent += handleOneOfArray(
-              propertyName,
-              parsedValueObject,
-              valuesArray
-            );
-          }
-        }
-      }
+    const propertyName = propertiesArray[index].name;
+    const propertyValueJoinedString = propertiesArray[index].value;
+    if (
+      propertyValueJoinedString !== undefined &&
+      propertyName !== "font-weight" &&
+      propertyName === "gap"
+    ) {
+      fileContent += parsePropertyValue(
+        propertyName,
+        propertyValueJoinedString,
+        valuesArray,
+        fileContent
+      );
     }
-    console.log(fileContent);
     createFileAndAppendCSSRules(propertyName, fileContent);
   }
 }
+
+const parsePropertyValue = (
+  propertyName,
+  propertyValueJoinedString,
+  valuesArray,
+  fileContent
+) => {
+  console.log(propertyName);
+  console.log(propertyValueJoinedString);
+  const parsedValueObject = parsePropDefValue(propertyValueJoinedString);
+  if (parsedValueObject) {
+    if ("oneOf" in parsedValueObject) {
+      fileContent += handleOneOfArray(
+        propertyName,
+        parsedValueObject,
+        valuesArray
+      );
+    }
+  }
+  return fileContent;
+};
 
 const handleOneOfArray = (propertyName, parsedValueObject, valuesArray) => {
   let CSSRuleStrings = "";
@@ -157,4 +161,4 @@ const handleSecondOrderArray = (
   return CSSRuleStrings;
 };
 
-module.exports = { parsePropertyValuesArray };
+module.exports = { iterateJSONResponseData };
