@@ -11,4 +11,22 @@ function createCSSRuleFromPropertyValue(propertyName, propertyValue) {
   return classRule;
 }
 
-module.exports = { createCSSRuleFromPropertyValue };
+const createCSSRuleFromCustomPrimitiveValue = (
+  propertyName,
+  propertyValueName,
+  propertyValue
+) => {
+  const propertyValueNameFormatted =
+    propertyValueName.indexOf(" ") == -1
+      ? propertyValueName
+      : propertyValueName.replace(" ", "-");
+  const className = "." + propertyName + "-" + propertyValueNameFormatted;
+  const classRule =
+    className + " {\n  " + propertyName + ": " + propertyValue + ";\n}\n";
+  return classRule;
+};
+
+module.exports = {
+  createCSSRuleFromPropertyValue,
+  createCSSRuleFromCustomPrimitiveValue,
+};

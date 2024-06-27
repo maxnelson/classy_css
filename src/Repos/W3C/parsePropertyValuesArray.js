@@ -21,6 +21,10 @@ const {
   extractArrayFromString,
 } = require("@src/utils/string_utils/extractArrayFromString");
 const { parsePropDefValue } = require("@src/repos/W3C/css-grammar-parser");
+const customPrimitiveValuesArray = require("@src/repos/W3C/localJSON/customPrimitiveValues.json");
+const {
+  createCSSRuleFromCustomPrimitiveValue,
+} = require("@src/repos/W3C/createCSSRuleFromPropertyValue");
 
 async function parsePropertyValuesArray(responseData) {
   const propertiesArray = responseData.properties;
@@ -28,14 +32,12 @@ async function parsePropertyValuesArray(responseData) {
   for (let i = 0; i < propertiesArray.length; i++) {
     let fileContent = "";
     const propertyName = propertiesArray[i].name;
-    if (propertyName === "outline-color") {
+    if (propertyName !== "font-weight") {
       const propertyValueJoinedString = propertiesArray[i].value;
-
       console.log(propertyName);
       console.log(propertyValueJoinedString);
       if (propertyValueJoinedString !== undefined) {
         const parsedValueObject = parsePropDefValue(propertyValueJoinedString);
-        console.log(parsedValueObject);
         if (parsedValueObject) {
           if ("oneOf" in parsedValueObject) {
             fileContent += handleOneOfArray(
@@ -47,8 +49,8 @@ async function parsePropertyValuesArray(responseData) {
         }
       }
     }
-    //console.log(fileContent);
-    //createFileAndAppendCSSRules(propertyName, fileContent);
+    console.log(fileContent);
+    createFileAndAppendCSSRules(propertyName, fileContent);
   }
 }
 
@@ -75,8 +77,22 @@ const handleOneOfArray = (propertyName, parsedValueObject, valuesArray) => {
         valuesArray
       );
     } else if (propertyValue.type === "primitive") {
-      console.log("primitive value: " + propertyValue.name);
+      CSSRuleStrings += handlePrimitiveValueType(propertyName, propertyValue);
     }
+  }
+  return CSSRuleStrings;
+};
+
+const handlePrimitiveValueType = (propertyName, valueObject) => {
+  let CSSRuleStrings = "";
+  const primitiveLookup = customPrimitiveValuesArray[valueObject.name];
+  for (let primitiveValue in primitiveLookup) {
+    const CSSRuleString = createCSSRuleFromCustomPrimitiveValue(
+      propertyName,
+      primitiveValue,
+      primitiveLookup[primitiveValue]
+    );
+    CSSRuleStrings += CSSRuleString;
   }
   return CSSRuleStrings;
 };
@@ -87,10 +103,6 @@ const handleNonTerminalValue = (propertyName, valueName, valuesArray) => {
     valueName,
     valuesArray
   );
-  console.log("does this even fire");
-
-  console.log(nonTerminalValuesArray);
-
   for (nonTerminalValue of nonTerminalValuesArray) {
     const CSSRuleString = createCSSRuleFromPropertyValue(
       propertyName,
