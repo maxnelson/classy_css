@@ -22,7 +22,18 @@ async function compileCSSFromJSON() {
   const responseDataCSSAlignFile = await fetchJSONFromURL.fetchJSONFromURL(
     CSSAlignFile
   );
-  iterateJSONResponseData(responseDataCSSAlignFile);
+  //iterateJSONResponseData(responseDataCSSAlignFile);
+  const CSSFileBackgrounds = path.join(
+    global.__basedir,
+    "src",
+    "repos",
+    "W3C",
+    "localJSON",
+    "css-backgrounds.json"
+  );
+  const responseDataCSSFileBackgrounds =
+    await fetchJSONFromURL.fetchJSONFromURL(CSSFileBackgrounds);
+  iterateJSONResponseData(responseDataCSSFileBackgrounds);
   const CSSFile = path.join(
     global.__basedir,
     "src",

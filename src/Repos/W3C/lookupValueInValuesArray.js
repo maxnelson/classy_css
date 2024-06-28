@@ -1,15 +1,22 @@
+const {
+  parsePropDefValue,
+} = require("@src/utils/parse_utils/css-grammar-parser");
+
 function lookupValueInValuesArray(propertyValue, valuesArray) {
   const valueObject = valuesArray.find(
     (obj) => obj.name === "<" + propertyValue + ">"
   );
   if (valueObject) {
-    let valueObjectValuesCompiled = [];
+    /*
+    let returnValue = [];
     for (let propertyValueObject in valueObject.values) {
-      valueObjectValuesCompiled.push(
+      returnValue.push(
         valueObject.values[propertyValueObject].name
       );
     }
-    return valueObjectValuesCompiled;
+      */
+    let returnValue = parsePropDefValue(valueObject.value);
+    return returnValue;
   }
 }
 
