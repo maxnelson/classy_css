@@ -23,17 +23,19 @@ function iterateJSONResponseData(responseData) {
     const propertyValueJoinedString = propertiesArray[index].value;
     if (
       propertyValueJoinedString !== undefined &&
-      propertyName !== "font-weight" &&
-      propertyName === "background-position"
+      propertyName !== "font-weight"
     ) {
       let parsedValueObject = parsePropDefValue(propertyValueJoinedString);
       if (parsedValueObject) {
         fileContent += handleParsedValueObject(
           propertyName,
           parsedValueObject,
-          valuesArray
+          valuesArray,
+          fileContent
         );
       }
+      console.log("fileContent");
+      //console.log(fileContent);
       createFileAndAppendCSSRules(propertyName, fileContent);
     }
   }
@@ -42,38 +44,40 @@ function iterateJSONResponseData(responseData) {
 const handleParsedValueObject = (
   propertyName,
   parsedValueObject,
-  valuesArray
+  valuesArray,
+  fileContent
 ) => {
+  console.log("handleParsedValueObject");
   console.log(parsedValueObject);
   let CSSRuleStrings = "";
   let combinatorType;
   let propertyValueObjectCollection;
   if (parsedValueObject.type === "array") {
-    handleParsedValueObject(
+    CSSRuleStrings += handleParsedValueObject(
       propertyName,
       parsedValueObject.items,
       valuesArray,
-      CSSRuleStrings
+      fileContent
     );
   } else if (Array.isArray(parsedValueObject)) {
-    console.log("we got a true array");
     for (let i = 0; i < parsedValueObject.length; i++) {
       CSSRuleStrings += handleParsedValueObject(
         propertyName,
         parsedValueObject[i],
-        valuesArray
+        valuesArray,
+        fileContent
       );
     }
   } else {
     for (combinatorType in parsedValueObject) {
-      console.log(combinatorType);
       if (combinatorType === "oneOf") {
         propertyValueObjectCollection = parsedValueObject[combinatorType];
         for (propertyValueObject in propertyValueObjectCollection) {
           CSSRuleStrings += handleParsedValueObject(
             propertyName,
             propertyValueObjectCollection[propertyValueObject],
-            valuesArray
+            valuesArray,
+            fileContent
           );
         }
       } else if (combinatorType === "allOf") {
@@ -82,41 +86,44 @@ const handleParsedValueObject = (
           CSSRuleStrings += handleParsedValueObject(
             propertyName,
             propertyValueObjectCollection[propertyValueObject],
-            valuesArray
+            valuesArray,
+            fileContent
           );
         }
       } else {
-        console.log("see when this is getting called");
         CSSRuleStrings += handleParsedValueObjectItem(
           propertyName,
           parsedValueObject,
-          valuesArray
+          valuesArray,
+          fileContent
         );
       }
     }
   }
-  return CSSRuleStrings;
+  fileContent += CSSRuleStrings;
+  return fileContent;
 };
 
 const handleParsedValueObjectItem = (
   propertyName,
   parsedValueObjectItem,
-  valuesArray
+  valuesArray,
+  fileContent
 ) => {
+  //console.log("handleParsedValueObjectItem");
   let CSSRuleStrings = "";
-  console.log("see what we got");
-  console.log(parsedValueObjectItem);
   if (parsedValueObjectItem.type === "keyword") {
-    const CSSRuleString = createCSSRuleFromPropertyValue(
+    CSSRuleStrings += createCSSRuleFromPropertyValue(
       propertyName,
       parsedValueObjectItem.name
     );
-    CSSRuleStrings += CSSRuleString;
+    //CSSRuleStrings += CSSRuleString;
   } else if (parsedValueObjectItem.type === "valuespace") {
     CSSRuleStrings += handleValuespaceValue(
       propertyName,
       parsedValueObjectItem.name,
-      valuesArray
+      valuesArray,
+      fileContent
     );
   } else if (parsedValueObjectItem.type === "array") {
     CSSRuleStrings += handleParsedValueObjectItem(
@@ -130,12 +137,13 @@ const handleParsedValueObjectItem = (
       parsedValueObjectItem
     );
   } else {
-    console.log("unhandled type");
   }
-  return CSSRuleStrings;
+  fileContent += CSSRuleStrings;
+  return fileContent;
 };
 
 const handlePrimitiveValueType = (propertyName, valueObject) => {
+  //console.log("handlePrimitiveValueType");
   let CSSRuleStrings = "";
   const primitiveLookup = customPrimitiveValuesArray[valueObject.name];
   for (let primitiveValue in primitiveLookup) {
@@ -149,73 +157,30 @@ const handlePrimitiveValueType = (propertyName, valueObject) => {
   return CSSRuleStrings;
 };
 
-const handleValuespaceValue = (propertyName, valueName, valuesArray) => {
+const handleValuespaceValue = (
+  propertyName,
+  valueName,
+  valuesArray,
+  fileContent
+) => {
+  //console.log("handleValuespaceValue");
   let CSSRuleStrings = "";
   const valuespaceValueObject = lookupValueInValuesArray(
     valueName,
     valuesArray
   );
-  /*
-  for (nonTerminalValue of valuespaceValueObject) {
-    const CSSRuleString = createCSSRuleFromPropertyValue(
-      propertyName,
-      nonTerminalValue
-    );
-    CSSRuleStrings += CSSRuleString;
-  }
-  */
+  //console.log(valuespaceValueObject);
   const parsedValueObject = handleParsedValueObject(
     propertyName,
     valuespaceValueObject,
-    valuesArray
+    valuesArray,
+    fileContent
   );
-  return CSSRuleStrings;
-};
-
-const handleArrayTypeValue = (
-  propertyName,
-  propertyValuesArray,
-  valuesArray
-) => {
-  let CSSRuleStrings = "";
-  if (propertyValuesArray.type === "array") {
-    CSSRuleStrings += handleSecondOrderArray(
-      propertyName,
-      propertyValuesArray.items,
-      valuesArray
-    );
-  }
-  for (let k = 0; k < propertyValuesArray.length; k++) {
-    const propertyValue = propertyValuesArray[k];
-    if (propertyValue.type === "valuespace") {
-      CSSRuleStrings += handleValuespaceValue(
-        propertyName,
-        propertyValue.name,
-        valuesArray
-      );
-    }
-    if (propertyValue.type === "array") {
-    }
-  }
-  return CSSRuleStrings;
-};
-
-const handleSecondOrderArray = (
-  propertyName,
-  propertyValuesArray,
-  valuesArray
-) => {
-  let CSSRuleStrings = "";
-  for (item of propertyValuesArray) {
-    if ("oneOf" in item) {
-      CSSRuleStrings += handleParsedValueObject(
-        propertyName,
-        item,
-        valuesArray
-      );
-    }
-  }
-  return CSSRuleStrings;
+  //console.log(parsedValueObject);
+  CSSRuleStrings += parsedValueObject;
+  fileContent += CSSRuleStrings;
+  //console.log(CSSRuleStrings);
+  return fileContent;
 };
 
 module.exports = { iterateJSONResponseData };
