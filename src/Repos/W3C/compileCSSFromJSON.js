@@ -5,6 +5,9 @@ const fetchJSONFromURL = require("@src/utils/fetch_utils/fetchJSONFromURL");
 const {
   iterateJSONResponseData,
 } = require("@src/repos/W3C/iterateJSONResponseData");
+const {
+  iterateJSONResponseData_newApproach,
+} = require("@src/repos/W3C/newApproach/iterateJSONResponseData_newApproach");
 
 async function compileCSSFromJSON() {
   const distDirectory = path.join(global.__basedir, "dist", "repos", "W3C");
@@ -33,7 +36,8 @@ async function compileCSSFromJSON() {
   );
   const responseDataCSSFileBackgrounds =
     await fetchJSONFromURL.fetchJSONFromURL(CSSFileBackgrounds);
-  iterateJSONResponseData(responseDataCSSFileBackgrounds);
+  //iterateJSONResponseData(responseDataCSSFileBackgrounds);
+  //iterateJSONResponseData_newApproach(responseDataCSSFileBackgrounds);
   const CSSFile = path.join(
     global.__basedir,
     "src",
@@ -44,6 +48,18 @@ async function compileCSSFromJSON() {
   );
   const responseDataCSSFile = await fetchJSONFromURL.fetchJSONFromURL(CSSFile);
   //iterateJSONResponseData(responseDataCSSFile);
+  const CSSFileSample = path.join(
+    global.__basedir,
+    "src",
+    "repos",
+    "W3C",
+    "localJSON",
+    "sample.json"
+  );
+  const responseDataCSSFileSample = await fetchJSONFromURL.fetchJSONFromURL(
+    CSSFileSample
+  );
+  iterateJSONResponseData_newApproach(responseDataCSSFileSample);
 }
 
 module.exports = { compileCSSFromJSON };

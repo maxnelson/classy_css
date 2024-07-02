@@ -56,5 +56,11 @@
     "80-percent": "80%",
     "90-percent": "90%",
     "100-percent": "100%"
+  },
+  "length-percentage": {
+    "1rem": "1rem",
+    "2rem": "2rem",
+    "10-percent": "10%",
+    "20-percent": "20%"
   }
 }

@@ -1,40 +1,21 @@
-
-{"oneOf":
-    [
-        {"type":"keyword","name":"normal"},
-        {"type":"valuespace","name":"content-distribution"},
-        {"type":"array","items":
-            [
-                {"type":"valuespace","name":"overflow-position","optional":true},
-                {"oneOf":
-                    [
-                        {"type":"valuespace","name":"content-position"},
-                        {"type":"keyword","name":"left"},
-                        {"type":"keyword","name":"right"}
-                    ]
-                }
-            ]
-        }
-    ]
-},
-
-{"oneOf":
-    [
-        {"type":"keyword","name":"auto"},
-        {"type":"keyword","name":"normal"},
-        {"type":"keyword","name":"stretch"},
-        {"type":"valuespace","name":"baseline-position"},
-        {"type":"array","items":
-            [
-                {"type":"valuespace","name":"overflow-position","optional":true},
-                {"oneOf":
-                    [    
-                        {"type":"valuespace","name":"self-position"},
-                        {"type":"keyword","name":"left"},
-                        {"type":"keyword","name":"right"}
-                    ]
-                }
-            ]
-        }
-    ]
+{
+  "spec": {
+    "title": "CSS Backgrounds and Borders Module Level 3",
+    "url": "https://drafts.csswg.org/css-backgrounds-3/"
+  },
+  "properties": [
+    {
+      "name": "background-position",
+      "href": "https://drafts.csswg.org/css-backgrounds-3/#propdef-background-color",
+      "value": "[ center | [ left | right ] <length-percentage>?]",
+      "initial": "transparent",
+      "appliesTo": "all elements",
+      "inherited": "no",
+      "percentages": "N/A",
+      "computedValue": "computed color",
+      "canonicalOrder": "per grammar",
+      "animationType": "by computed value",
+      "styleDeclaration": ["background-color", "backgroundColor"]
+    }
+  ]
 }
