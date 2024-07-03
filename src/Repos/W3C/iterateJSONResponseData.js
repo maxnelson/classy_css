@@ -37,8 +37,6 @@ function iterateJSONResponseData(responseData) {
           ""
         );
       }
-      console.log("fileContent");
-      //console.log(fileContent);
       createFileAndAppendCSSRules(propertyName, fileContent);
     }
   }
@@ -51,7 +49,6 @@ const handleParsedValueObject = (
   fileContent,
   runningClassName
 ) => {
-  console.log("handleParsedValueObject");
   console.log(parsedValueObject);
   let CSSRuleStrings = "";
   let combinatorType;
@@ -91,6 +88,11 @@ const handleParsedValueObject = (
           );
         }
       } else if (combinatorType === "allOf") {
+        console.log("check 2 1 2");
+        console.log(parsedValueObject[combinatorType]);
+        handleArrayValueType(parsedValueObject[combinatorType]);
+
+        /*
         propertyValueObjectCollection = parsedValueObject[combinatorType];
         for (propertyValueObject in propertyValueObjectCollection) {
           CSSRuleStrings += handleParsedValueObject(
@@ -101,6 +103,7 @@ const handleParsedValueObject = (
             ""
           );
         }
+          */
       } else {
         CSSRuleStrings += handleParsedValueObjectItem(
           propertyName,

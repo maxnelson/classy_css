@@ -7,7 +7,7 @@
     {
       "name": "background-position",
       "href": "https://drafts.csswg.org/css-backgrounds-3/#propdef-background-color",
-      "value": "[ center | [ left | right ] <length-percentage>?]",
+      "value": "[ center | [ left | right ] <length-percentage>? ] && [ center | [ top | bottom ] <length-percentage>? ]",
       "initial": "transparent",
       "appliesTo": "all elements",
       "inherited": "no",

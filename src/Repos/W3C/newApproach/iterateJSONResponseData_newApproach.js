@@ -45,7 +45,6 @@ const handleParsedValueObject = (
   valuesArray,
   fileContent
 ) => {
-  console.log(JSON.stringify(parsedValueObject, null, 2));
   let CSSRuleString;
   if (parsedValueObject.type === "keyword") {
     CSSRuleString += createCSSRuleFromPropertyValue(
