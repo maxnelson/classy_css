@@ -59,7 +59,7 @@ async function compileCSSFromJSON() {
   const responseDataCSSFileSample = await fetchJSONFromURL.fetchJSONFromURL(
     CSSFileSample
   );
-  iterateJSONResponseData_newApproach(responseDataCSSFileSample);
+  iterateJSONResponseData(responseDataCSSFileSample);
 }
 
 module.exports = { compileCSSFromJSON };

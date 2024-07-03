@@ -13,6 +13,7 @@ const {
   lookupValueInValuesArray,
 } = require("@src/repos/W3C/lookupValueInValuesArray");
 const customPrimitiveValuesArray = require("@src/repos/W3C/localJSON/customPrimitiveValues.json");
+const { handleArrayValueType } = require("@src/repos/w3C/handleArrayValueType");
 
 function iterateJSONResponseData(responseData) {
   const propertiesArray = responseData.properties;
@@ -32,7 +33,8 @@ function iterateJSONResponseData(responseData) {
           propertyName,
           parsedValueObject,
           valuesArray,
-          fileContent
+          fileContent,
+          ""
         );
       }
       console.log("fileContent");
@@ -46,7 +48,8 @@ const handleParsedValueObject = (
   propertyName,
   parsedValueObject,
   valuesArray,
-  fileContent
+  fileContent,
+  runningClassName
 ) => {
   console.log("handleParsedValueObject");
   console.log(parsedValueObject);
@@ -58,17 +61,22 @@ const handleParsedValueObject = (
       propertyName,
       parsedValueObject.items,
       valuesArray,
-      fileContent
+      fileContent,
+      ""
     );
   } else if (Array.isArray(parsedValueObject)) {
+    handleArrayValueType(parsedValueObject);
+    /*
     for (let i = 0; i < parsedValueObject.length; i++) {
       CSSRuleStrings += handleParsedValueObject(
         propertyName,
         parsedValueObject[i],
         valuesArray,
-        fileContent
+        fileContent,
+        ""
       );
     }
+      */
   } else {
     for (combinatorType in parsedValueObject) {
       if (combinatorType === "oneOf") {
@@ -78,7 +86,8 @@ const handleParsedValueObject = (
             propertyName,
             propertyValueObjectCollection[propertyValueObject],
             valuesArray,
-            fileContent
+            fileContent,
+            ""
           );
         }
       } else if (combinatorType === "allOf") {
@@ -88,7 +97,8 @@ const handleParsedValueObject = (
             propertyName,
             propertyValueObjectCollection[propertyValueObject],
             valuesArray,
-            fileContent
+            fileContent,
+            ""
           );
         }
       } else {
@@ -175,7 +185,8 @@ const handleValuespaceValue = (
     propertyName,
     valuespaceValueObject,
     valuesArray,
-    fileContent
+    fileContent,
+    ""
   );
   //console.log(parsedValueObject);
   CSSRuleStrings += parsedValueObject;

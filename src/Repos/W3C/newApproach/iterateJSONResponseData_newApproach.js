@@ -48,47 +48,20 @@ const handleParsedValueObject = (
   console.log(JSON.stringify(parsedValueObject, null, 2));
   let CSSRuleString;
   if (parsedValueObject.type === "keyword") {
-    //if we've seen the keyword before, cache it
-
     CSSRuleString += createCSSRuleFromPropertyValue(
       propertyName,
       parsedValueObject.name
     );
-  } else if (parsedValueObject.type === "array") {
-    console.log("handlethis");
-  } else {
-    for (combinatorType in parsedValueObject) {
-      if (combinatorType === "oneOf") {
-        for (item of parsedValueObject[combinatorType]) {
-          if (item.type === "keyword") {
-            CSSRuleString += createCSSRuleFromPropertyValue(
-              propertyName,
-              item.name
-            );
-          } else if (item.type === "array") {
-            for (item of item.items) {
-              if (combinatorType === "oneOf") {
-                for (item of parsedValueObject[combinatorType]) {
-                  //console.log(item);
-                  if (item.type === "array") {
-                    for (item of item.items) {
-                      for (combinatorType in item) {
-                        if (combinatorType === "oneOf") {
-                          for (item of parsedValueObject[combinatorType]) {
-                            console.log(item);
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
   }
+  if (parsedValueObject.type === "array") {
+    CSSRuleString += handleParsedValueObject(
+      propertyName,
+      parsedValueObject.items,
+      valuesArray,
+      fileContent
+    );
+  }
+
   return CSSRuleString;
 };
 
